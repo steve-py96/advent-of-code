@@ -9,7 +9,6 @@ const getSumOfAllMuls = (regex: RegExp) => {
   let summingEnabled = true;
 
   return Array.from(input.matchAll(regex)).reduce((result, [, , num1, num2, enabler]) => {
-    console.log({ num1, num2, enabler });
     if (!enabler && summingEnabled) {
       return result + +num1 * +num2;
     }
