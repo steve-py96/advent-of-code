@@ -1,0 +1,17 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "run": "tsx ./src/index.ts",
+    "setup": "tsx ./src/setup.ts"
+  },
+  "dependencies": {
+    "node-html-parser": "^6.1.13",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1"
+  }
+}
