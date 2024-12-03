@@ -6,17 +6,19 @@ const onlyMul = /mul\((\d+),(\d+)\)/g;
 const disablableMul = /(mul\((\d+),(\d+)\))|(do(?:n't)?)\(\)/g;
 
 const getSumOfAllMuls = (regex: RegExp) => {
+  const matches = Array.from(input.matchAll(regex));
   let summingEnabled = true;
+  let result = 0;
 
-  return Array.from(input.matchAll(regex)).reduce((result, [, , num1, num2, enabler]) => {
+  for (const [, , num1, num2, enabler] of matches) {
     if (!enabler && summingEnabled) {
-      return result + +num1 * +num2;
+      result += +num1 * +num2;
+    } else {
+      summingEnabled = enabler === 'do';
     }
+  }
 
-    summingEnabled = enabler === 'do';
-
-    return result;
-  }, 0);
+  return result;
 };
 
 console.log(getSumOfAllMuls(disablableMul));
