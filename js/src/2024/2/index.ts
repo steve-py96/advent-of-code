@@ -3,7 +3,9 @@ import { defineSolution, printDebug, toMatrix } from '@/utils';
 type RowStyle = 'asc' | 'desc';
 
 export default defineSolution((input, part) => {
-  const matrix = toMatrix(input, (cell) => +cell);
+  const matrix = toMatrix(input, {
+    transform: (cell) => +cell,
+  });
 
   const validateRow = (row: Array<number>) => {
     const rowStyle: RowStyle = row[0] - row[1] > 0 ? 'desc' : 'asc';

@@ -1,4 +1,4 @@
-import { defineSolution } from '@/utils';
+import { defineSolution, printDebug } from '@/utils';
 
 export default defineSolution((input, part) => {
   let level = 0;
@@ -11,6 +11,8 @@ export default defineSolution((input, part) => {
     } else if (char === ')') {
       level -= 1;
     }
+
+    printDebug(`level updated to ${level}`);
 
     if (part === '2' && level === -1) {
       return index + 1;

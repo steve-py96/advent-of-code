@@ -12,6 +12,8 @@ describe('2015/1', () => {
     expect(func('))(')).toBe(-1);
     expect(func(')))')).toBe(-3);
     expect(func(')())())')).toBe(-3);
+    expect(func(')', '2')).toBe(1);
+    expect(func('()())', '2')).toBe(5);
   });
 
   it('input', async () => {

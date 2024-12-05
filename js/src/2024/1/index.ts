@@ -1,7 +1,9 @@
 import { defineSolution, printDebug, toMatrix } from '@/utils';
 
 export default defineSolution((input, part) => {
-  const matrix = toMatrix(input, (cell) => +cell);
+  const matrix = toMatrix(input, {
+    transform: (cell) => +cell,
+  });
   const [leftCol, rightCol] = matrix.reduce(
     (currentCols, [left, right]) => {
       currentCols[0].push(left);

@@ -64,11 +64,17 @@ const getArgs = () => {
   };
 };
 
-const toMatrix = <MatrixType = string>(input: string, callback?: (cell: string) => MatrixType) => {
+const toMatrix = <MatrixType = string>(
+  input: string,
+  params: { transform?: (cell: string) => MatrixType; delimiter?: string } = {}
+) => {
   return input.split('\n').map((row) => {
-    const cells = row.trim().replace(/\s+/, ' ').split(' ');
+    const cells = row
+      .trim()
+      .replace(/\s+/, ' ')
+      .split(params.delimiter ?? ' ');
 
-    return callback ? cells.map(callback) : cells;
+    return params.transform ? cells.map(params.transform) : cells;
   }) as Array<Array<MatrixType>>;
 };
 
