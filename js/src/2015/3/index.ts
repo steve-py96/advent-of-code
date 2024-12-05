@@ -1,4 +1,4 @@
-import { defineSolution } from '@/utils';
+import { defineSolution, printDebug } from '@/utils';
 
 export default defineSolution((input, part) => {
   const visitedPlaces = new Map<string, number>();
@@ -13,8 +13,11 @@ export default defineSolution((input, part) => {
   const deliverPresents = () => {
     for (const currentLocation of currentLocations) {
       const key = currentLocation.join('|');
+      const value = (visitedPlaces.get(key) ?? 0) + 1;
 
-      visitedPlaces.set(key, (visitedPlaces.get(key) ?? 0) + 1);
+      visitedPlaces.set(key, value);
+
+      printDebug(`location ${key} has been updated to ${value} visits`);
     }
   };
 
