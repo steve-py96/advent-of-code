@@ -5,6 +5,11 @@ import { parseArgs } from 'node:util';
 
 export { readInput, getExampleFiles, exists, getArgs, isDebugMode, printResult, printDebug, toMatrix, defineSolution };
 
+const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
+  readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
+    res.trim()
+  );
+
 const exists = (path: PathLike) =>
   access(path)
     .then(() => true)
@@ -13,11 +18,6 @@ const exists = (path: PathLike) =>
 const getExampleFiles = (year: string | number, day: string | number) =>
   readdir(join(process.cwd(), 'src', year.toString(), day.toString())).then((res) =>
     res.filter((file) => file.includes('example'))
-  );
-
-const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
-  readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
-    res.trim()
   );
 
 const args = parseArgs({

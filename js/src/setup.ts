@@ -29,13 +29,18 @@ import { describe, it, expect } from 'vitest';
 import { readInput } from '@/utils';
 import func from '.';
 
-describe('${year}/${day}', () => {
-  it('example', async () => {
-    expect(func(await readInput(${year}, ${day}, 'example.txt'))).toBe('insert result');
+describe('${year}/${day}', async () => {
+  const [exampleInput, inputInput] = await Promise.all([
+    readInput(${year}, ${day}, 'example.txt'),
+    readInput(${year}, ${day})
+  ])
+
+  it('example', () => {
+    expect(func(exampleInput)).toBe('insert result');
   });
 
-  it.skip('input', async () => {
-    expect(func(await readInput(${year}, ${day}))).toBe('insert result');
+  it.skip('input', () => {
+    expect(func(inputInput)).toBe('insert result');
   });
 });
 `.trim();
