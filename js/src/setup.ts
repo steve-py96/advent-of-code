@@ -1,9 +1,9 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parse } from 'node-html-parser';
-import { exists, dateAndPartFromArgs } from '@/utils';
+import { exists, getArgs } from '@/utils';
 
-const [[year, day]] = dateAndPartFromArgs();
+const { year, day } = getArgs();
 const url = `https://adventofcode.com/${year}/day/${day}`;
 const dir = join(process.cwd(), 'src', year, day);
 const index = join(dir, 'index.ts');
