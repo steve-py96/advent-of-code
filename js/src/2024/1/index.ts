@@ -1,31 +1,32 @@
-import { printDebug, printResult, readInput, toMatrix } from '@/utils';
+import { defineSolution, printDebug, toMatrix } from '@/utils';
 
-const input = await readInput(2024, 1);
-const matrix = toMatrix(input, (cell) => +cell);
-const [leftCol, rightCol] = matrix.reduce(
-  (currentCols, [leftRaw, rightRaw]) => {
-    currentCols[0].push(leftRaw);
-    currentCols[1].push(rightRaw);
+export default defineSolution((input) => {
+  const matrix = toMatrix(input, (cell) => +cell);
+  const [leftCol, rightCol] = matrix.reduce(
+    (currentCols, [leftRaw, rightRaw]) => {
+      currentCols[0].push(leftRaw);
+      currentCols[1].push(rightRaw);
 
-    return currentCols;
-  },
-  [[], []] as [left: Array<number>, right: Array<number>]
-);
+      return currentCols;
+    },
+    [[], []] as [left: Array<number>, right: Array<number>]
+  );
 
-leftCol.sort();
-rightCol.sort();
+  leftCol.sort();
+  rightCol.sort();
 
-let distance = 0;
+  let distance = 0;
 
-for (let index = 0; index < leftCol.length; index += 1) {
-  const leftVal = leftCol[index];
-  const rightVal = rightCol[index];
-  const rowDistance = Math.abs(leftVal - rightVal);
+  for (let index = 0; index < leftCol.length; index += 1) {
+    const leftVal = leftCol[index];
+    const rightVal = rightCol[index];
+    const rowDistance = Math.abs(leftVal - rightVal);
 
-  distance += rowDistance;
+    distance += rowDistance;
 
-  printDebug(`${leftVal} <-> ${rightVal}   = ${rowDistance}`);
-  printDebug(`distance updated to ${distance}`);
-}
+    printDebug(`${leftVal} <-> ${rightVal}   = ${rowDistance}`);
+    printDebug(`distance updated to ${distance}`);
+  }
 
-printResult(distance);
+  return distance;
+});

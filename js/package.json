@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "run": "tsx ./src/index.ts",
-    "setup": "tsx ./src/setup.ts"
+    "setup": "tsx ./src/setup.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "node-html-parser": "^6.1.13",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8"
   },
   "devDependencies": {
     "@types/node": "^22.10.1"

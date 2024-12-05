@@ -1,24 +1,25 @@
-import { readInput } from '@/utils';
+import { defineSolution } from '@/utils';
 
-const input = await readInput(2024, 3);
+const regex = /(mul\((\d+),(\d+)\))|(do(?:n't)?)\(\)/g;
 
-const onlyMul = /mul\((\d+),(\d+)\)/g;
-const disablableMul = /(mul\((\d+),(\d+)\))|(do(?:n't)?)\(\)/g;
+export default defineSolution((input, part) => {
+  const getSumOfAllMuls = (allowEnableOverwrite?: boolean) => {
+    const matches = Array.from(input.matchAll(regex));
+    let summingEnabled = true;
+    let result = 0;
 
-const getSumOfAllMuls = (regex: RegExp) => {
-  const matches = Array.from(input.matchAll(regex));
-  let summingEnabled = true;
-  let result = 0;
-
-  for (const [, , num1, num2, enabler] of matches) {
-    if (!enabler && summingEnabled) {
-      result += +num1 * +num2;
-    } else {
-      summingEnabled = enabler === 'do';
+    for (const [, , num1, num2, enabler] of matches) {
+      if (!enabler && summingEnabled) {
+        result += +num1 * +num2;
+      } else {
+        if (allowEnableOverwrite) {
+          summingEnabled = enabler === 'do';
+        }
+      }
     }
-  }
 
-  return result;
-};
+    return result;
+  };
 
-console.log(getSumOfAllMuls(disablableMul));
+  return getSumOfAllMuls(part === '2');
+});

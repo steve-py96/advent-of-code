@@ -4,11 +4,7 @@
 
 ```sh
 # {year}/{day}
-pnpm run run 2024/1
-
-# or
-# {year} {day}
-pnpm run run 2024 1
+pnpm run run --date 2024/1
 ```
 
 ## run setup
@@ -17,10 +13,11 @@ Sets up the challenge
 
 ```sh
 # {year}/{day}
-pnpm run setup 2024/1
+pnpm run setup --date 2024/1
+```
 
-# or
-# {year} {day}
-pnpm run setup 2024 1
+## run tests
 
+```sh
+pnpm test
 ```
