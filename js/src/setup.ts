@@ -29,7 +29,7 @@ import { describe, it, expect } from 'vitest';
 import { readInput } from '@/utils';
 import func from '.';
 
-describe('2024/1', () => {
+describe('${year}/${day}', () => {
   it('example', async () => {
     expect(func(await readInput(${year}, ${day}, 'example.txt'))).toBe('insert result');
   });

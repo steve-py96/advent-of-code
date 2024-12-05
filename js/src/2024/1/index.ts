@@ -1,11 +1,11 @@
 import { defineSolution, printDebug, toMatrix } from '@/utils';
 
-export default defineSolution((input) => {
+export default defineSolution((input, part) => {
   const matrix = toMatrix(input, (cell) => +cell);
   const [leftCol, rightCol] = matrix.reduce(
-    (currentCols, [leftRaw, rightRaw]) => {
-      currentCols[0].push(leftRaw);
-      currentCols[1].push(rightRaw);
+    (currentCols, [left, right]) => {
+      currentCols[0].push(left);
+      currentCols[1].push(right);
 
       return currentCols;
     },
@@ -20,11 +20,21 @@ export default defineSolution((input) => {
   for (let index = 0; index < leftCol.length; index += 1) {
     const leftVal = leftCol[index];
     const rightVal = rightCol[index];
-    const rowDistance = Math.abs(leftVal - rightVal);
 
-    distance += rowDistance;
+    if (part === '2') {
+      const amount = rightCol.filter((num) => num === leftVal).length;
 
-    printDebug(`${leftVal} <-> ${rightVal}   = ${rowDistance}`);
+      distance += leftVal * amount;
+
+      printDebug(`${leftVal} appears ${amount} times in the right column`);
+    } else {
+      const rowDistance = Math.abs(leftVal - rightVal);
+
+      distance += rowDistance;
+
+      printDebug(`${leftVal} <-> ${rightVal}   = ${rowDistance}`);
+    }
+
     printDebug(`distance updated to ${distance}`);
   }
 

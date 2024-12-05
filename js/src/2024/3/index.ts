@@ -1,4 +1,4 @@
-import { defineSolution } from '@/utils';
+import { defineSolution, printDebug } from '@/utils';
 
 const regex = /(mul\((\d+),(\d+)\))|(do(?:n't)?)\(\)/g;
 
@@ -11,9 +11,13 @@ export default defineSolution((input, part) => {
     for (const [, , num1, num2, enabler] of matches) {
       if (!enabler && summingEnabled) {
         result += +num1 * +num2;
+
+        printDebug(`updated mul result to ${result}`);
       } else {
         if (allowEnableOverwrite) {
           summingEnabled = enabler === 'do';
+
+          printDebug(`updated overwrites-enabled to: ${summingEnabled}`);
         }
       }
     }
