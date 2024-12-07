@@ -1,6 +1,6 @@
 import { defineSolution, printDebug } from '@/utils';
 
-export default defineSolution((input, part) => {
+export default defineSolution((input) => {
   let level = 0;
 
   for (let index = 0; index < input.length; index += 1) {
@@ -13,10 +13,6 @@ export default defineSolution((input, part) => {
     }
 
     printDebug(`level updated to ${level}`);
-
-    if (part === '2' && level === -1) {
-      return index + 1;
-    }
   }
 
   return level;

@@ -3,7 +3,18 @@ import { readFile, access, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 
-export { readInput, getExampleFiles, exists, getArgs, isDebugMode, printResult, printDebug, toMatrix, defineSolution };
+export {
+  readInput,
+  getFiles,
+  exists,
+  getArgs,
+  isDebugMode,
+  printResult,
+  printDebug,
+  toMatrix,
+  defineSolution,
+  defineSetup,
+};
 
 const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
   readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
@@ -15,9 +26,9 @@ const exists = (path: PathLike) =>
     .then(() => true)
     .catch(() => false);
 
-const getExampleFiles = (year: string | number, day: string | number) =>
+const getFiles = (year: string | number, day: string | number, filePart: string) =>
   readdir(join(process.cwd(), 'src', year.toString(), day.toString())).then((res) =>
-    res.filter((file) => file.includes('example'))
+    res.filter((file) => file.includes(filePart))
   );
 
 const args = parseArgs({
@@ -78,7 +89,9 @@ const toMatrix = <MatrixType = string>(
   }) as Array<Array<MatrixType>>;
 };
 
-const defineSolution =
-  (callback: (input: string, part?: string) => unknown) =>
-  (input: string, part = '1') =>
-    callback(input, part);
+const defineSolution = (callback: (input: string) => unknown) => (input: string) => callback(input);
+
+const defineSetup =
+  <ReturnValue = unknown>(callback: (input: string) => ReturnValue) =>
+  (input: string) =>
+    callback(input);

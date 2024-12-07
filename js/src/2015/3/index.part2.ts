@@ -1,14 +1,10 @@
 import { defineSolution, printDebug } from '@/utils';
+import setup from './setup';
 
-export default defineSolution((input, part) => {
-  const visitedPlaces = new Map<string, number>();
-  const currentLocations = [] as Array<[x: number, y: number]>;
+export default defineSolution((input) => {
+  const [visitedPlaces, currentLocations] = setup(input);
 
-  if (part === '2') {
-    currentLocations.push([0, 0], [0, 0]);
-  } else {
-    currentLocations.push([0, 0]);
-  }
+  currentLocations.push([0, 0], [0, 0]);
 
   const deliverPresents = () => {
     for (const currentLocation of currentLocations) {

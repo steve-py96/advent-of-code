@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readInput } from '@/utils';
-import func from '.';
+import part1 from './index.part1';
+import part2 from './index.part2';
 
 describe('2015/5', async () => {
   const [examplePart1Input, examplePart2Input, inputInput] = await Promise.all([
@@ -10,12 +11,12 @@ describe('2015/5', async () => {
   ]);
 
   it('example', () => {
-    expect(func(examplePart1Input)).toBe(2);
-    expect(func(examplePart2Input, '2')).toBe(2);
+    expect(part1(examplePart1Input)).toBe(2);
+    expect(part2(examplePart2Input)).toBe(2);
   });
 
   it('input', () => {
-    expect(func(inputInput)).toBe(258);
-    expect(func(inputInput, '2')).toBe(53);
+    expect(part1(inputInput)).toBe(258);
+    expect(part2(inputInput)).toBe(53);
   });
 });

@@ -6,7 +6,9 @@ import { exists, getArgs } from '@/utils';
 const { year, day } = getArgs();
 const url = `https://adventofcode.com/${year}/day/${day}`;
 const dir = join(process.cwd(), 'src', year, day);
-const index = join(dir, 'index.ts');
+const indexPart1 = join(dir, 'index.part1.ts');
+const indexPart2 = join(dir, 'index.part2.ts');
+const setup = join(dir, 'setup.ts');
 const test = join(dir, 'index.test.ts');
 const input = join(dir, 'input.txt');
 const example = join(dir, 'example.txt');
@@ -14,12 +16,20 @@ const text = join(dir, 'text.md');
 
 console.log(`fetching ${year} / ${day}...`);
 
-const inputText = (year: string, day: string) =>
-  `
+const indexText = `
 import { defineSolution } from '@/utils';
+import setup from './setup';
 
-export default defineSolution((input, part) => {
-  // insert solution
+export default defineSolution((input) => {
+  const [] = setup(input)
+
+  throw new Error('not implemented yet')
+});
+`.trim();
+
+const setupText = `
+export default defineSetup((input) => {
+  return [] as const
 });
 `.trim();
 
@@ -27,7 +37,8 @@ const testText = (year: string, day: string) =>
   `
 import { describe, it, expect } from 'vitest';
 import { readInput } from '@/utils';
-import func from '.';
+import part1 from './index.part1';
+import part2 from './index.part2';
 
 describe('${year}/${day}', async () => {
   const [exampleInput, inputInput] = await Promise.all([
@@ -36,7 +47,8 @@ describe('${year}/${day}', async () => {
   ])
 
   it('example', () => {
-    expect(func(exampleInput)).toBe('insert result');
+    expect(part1(exampleInput)).toBe('insert result');
+    // expect(part2(exampleInput)).toBe('insert result');
   });
 
   it.skip('input', () => {
@@ -62,8 +74,20 @@ if (!(await exists(dir))) {
   await mkdir(dir);
 }
 
-if (!(await exists(index))) {
-  writeFile(index, inputText(year, day), {
+if (!(await exists(indexPart1))) {
+  writeFile(indexPart1, indexText, {
+    encoding: 'utf-8',
+  });
+}
+
+if (!(await exists(indexPart2))) {
+  writeFile(indexPart2, indexText, {
+    encoding: 'utf-8',
+  });
+}
+
+if (!(await exists(setup))) {
+  writeFile(setup, setupText, {
     encoding: 'utf-8',
   });
 }

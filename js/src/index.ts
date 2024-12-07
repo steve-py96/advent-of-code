@@ -1,35 +1,37 @@
-import { printResult, readInput, getArgs, getExampleFiles } from '@/utils';
+import { printResult, readInput, getArgs, getFiles } from '@/utils';
 
 const { year, day, example, part } = getArgs();
-let exampleFile: null | string = null;
 
-console.log(`running src/${year}/${day}/index.ts...`);
+console.log(`running src/${year}/${day}/index.part${part}.ts...`);
 
-if (example) {
-  const exampleFiles = await await getExampleFiles(year, day);
+const getInput = async (filePart: string) => {
+  let filePath: null | string = null;
+  const files = await getFiles(year, day, filePart);
 
-  if (exampleFiles.length === 1) {
-    exampleFile = exampleFiles[0];
+  if (files.length === 1) {
+    filePath = files[0];
   } else {
     if (part) {
-      exampleFile = exampleFiles.find((file) => file.includes(`part${part}`)) ?? null;
+      filePath = files.find((file) => file.includes(`part${part}`)) ?? null;
     } else {
-      exampleFile = exampleFiles.find((file) => file.includes('part1')) ?? null;
+      filePath = files.find((file) => file.includes('part1')) ?? null;
     }
   }
 
-  if (exampleFile === null) {
-    throw new Error(`failed to load example file from src/${year}/${day}, does a file exist there?`);
+  if (filePath === null) {
+    throw new Error(`failed to load file from src/${year}/${day}/${filePath}, does a file exist there?`);
   } else {
-    console.log(`running against example file src/${year}/${day}/${exampleFile}...\n\n`);
+    console.log(`running against input from file src/${year}/${day}/${filePath}...\n\n`);
   }
-} else {
-  console.log(`running against file src/${year}/${day}/input.txt...\n\n`);
-}
+
+  return filePath;
+};
+
+const inputFilePath = await getInput(example ? 'example' : 'input');
 
 await Promise.all([
-  readInput(year, day, example ? exampleFile : undefined),
-  import(`./${year}/${day}`).then(
+  readInput(year, day, inputFilePath),
+  import(`./${year}/${day}/index.part${part}`).then(
     (res) => (res as { default: ReturnType<typeof import('@/utils').defineSolution> }).default
   ),
-] as const).then(([input, func]) => printResult(func(input, part)));
+] as const).then(([input, func]) => printResult(func(input)));
