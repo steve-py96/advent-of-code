@@ -28,6 +28,8 @@ export default defineSolution((input) => {
 `.trim();
 
 const setupText = `
+import { defineSetup } from '@/utils';
+
 export default defineSetup((input) => {
   return [] as const
 });
@@ -52,7 +54,8 @@ describe('${year}/${day}', async () => {
   });
 
   it.skip('input', () => {
-    expect(func(inputInput)).toBe('insert result');
+    expect(part1(inputInput)).toBe('insert result');
+    // expect(part2(inputInput)).toBe('insert result');
   });
 });
 `.trim();

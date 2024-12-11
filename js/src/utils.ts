@@ -3,18 +3,7 @@ import { readFile, access, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 
-export {
-  readInput,
-  getFiles,
-  exists,
-  getArgs,
-  isDebugMode,
-  printResult,
-  printDebug,
-  toMatrix,
-  defineSolution,
-  defineSetup,
-};
+export { readInput, getFiles, exists, getArgs, printResult, printDebug, toMatrix, defineSolution, defineSetup };
 
 const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
   readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
