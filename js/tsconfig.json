@@ -4,6 +4,7 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "baseUrl": ".",
+    "strictNullChecks": true,
     "paths": {
       "@/*": ["src/*"]
     }
