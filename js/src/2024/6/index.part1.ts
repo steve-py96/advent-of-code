@@ -1,14 +1,14 @@
-import { defineSolution, printDebug } from '@/utils';
+import { coordinateToString, defineSolution, printDebug } from '@/utils';
 import setup, { type Position } from './setup';
 
 export default defineSolution((input) => {
-  const { rows, startingPosition, move, positionToString } = setup(input);
+  const { rows, startingPosition, move } = setup(input);
   const colsAmout = rows[0].length;
   const visited = new Map<string, Array<Position['direction']>>();
   let position = { ...startingPosition };
 
   const visit = () => {
-    const coordinates = positionToString(position);
+    const coordinates = coordinateToString(position);
     const oldLength = visited.size;
 
     visited.set(coordinates, [...(visited.get(coordinates) ?? []), position.direction]);

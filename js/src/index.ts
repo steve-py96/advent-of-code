@@ -1,18 +1,18 @@
 import { printResult, readInput, getArgs, getFiles } from '@/utils';
 
-const { year, day, example, part } = getArgs();
+const { year, day, example, examplePart, part } = getArgs();
 
 console.log(`running src/${year}/${day}/index.part${part}.ts...`);
 
-const getInput = async (filePart: string) => {
+const getInput = async (filePart: string, customPart: string) => {
   let filePath: null | string = null;
   const files = await getFiles(year, day, filePart);
 
   if (files.length === 1) {
     filePath = files[0];
   } else {
-    if (part) {
-      filePath = files.find((file) => file.includes(`part${part}`)) ?? null;
+    if (customPart) {
+      filePath = files.find((file) => file.includes(`part${customPart}`)) ?? null;
     } else {
       filePath = files.find((file) => file.includes('part1')) ?? null;
     }
@@ -27,7 +27,7 @@ const getInput = async (filePart: string) => {
   return filePath;
 };
 
-const inputFilePath = await getInput(example ? 'example' : 'input');
+const inputFilePath = example ? await getInput('example', examplePart || part) : await getInput('input', part);
 
 await Promise.all([
   readInput(year, day, inputFilePath),

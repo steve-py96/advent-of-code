@@ -2,8 +2,20 @@ import { type PathLike } from 'node:fs';
 import { readFile, access, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
+import type { Coordinate } from '@/types';
 
-export { readInput, getFiles, exists, getArgs, printResult, printDebug, toMatrix, defineSolution, defineSetup };
+export {
+  readInput,
+  getFiles,
+  exists,
+  getArgs,
+  printResult,
+  printDebug,
+  toMatrix,
+  defineSolution,
+  defineSetup,
+  coordinateToString,
+};
 
 const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
   readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
@@ -32,6 +44,10 @@ const args = parseArgs({
     example: {
       type: 'boolean',
       default: false,
+    },
+    examplePart: {
+      type: 'string',
+      default: '',
     },
     debug: {
       type: 'boolean',
@@ -84,3 +100,5 @@ const defineSetup =
   <ReturnValue = unknown>(callback: (input: string) => ReturnValue) =>
   (input: string) =>
     callback(input);
+
+const coordinateToString = ({ x, y }: Coordinate) => `${x}/${y}`;

@@ -1,8 +1,8 @@
-import { defineSolution, printDebug } from '@/utils';
-import setup, { DIRECTIONS, OBSTACLE, type Position } from './setup';
+import { coordinateToString, defineSolution, printDebug } from '@/utils';
+import setup, { OBSTACLE, type Position } from './setup';
 
 export default defineSolution((input) => {
-  const { rows, startingPosition, move, positionToString } = setup(input);
+  const { rows, startingPosition, move } = setup(input);
   const colsAmout = rows[0].length;
   const moveHistory: Array<ReturnType<typeof move>> = [];
   const obstaclesForEndlessLoops = new Map<string, Set<Position['direction']>>();
@@ -74,18 +74,18 @@ export default defineSolution((input) => {
       const customRows = insertObstacleAt(nextMove.position);
       const obstacles = new Map<string, Array<Position['direction']>>();
 
-      printDebug(`emulating an obstacle at ${positionToString(nextMove.position)}...`);
+      printDebug(`emulating an obstacle at ${coordinateToString(nextMove.position)}...`);
 
       walkRoute({
         customRows,
         customPosition,
         done(obstacle) {
-          const currentKey = positionToString(obstacle);
+          const currentKey = coordinateToString(obstacle);
           const currentDirections = obstacles.get(currentKey) ?? [];
 
           // if the direction is already in the history it's a loop
           if (currentDirections.includes(obstacle.direction)) {
-            const globalKey = positionToString(nextMove.position);
+            const globalKey = coordinateToString(nextMove.position);
             const globalDirections = obstaclesForEndlessLoops.get(globalKey) ?? new Set();
 
             globalDirections.add(nextMove.position.direction);

@@ -1,11 +1,10 @@
-import { defineSetup, printDebug } from '@/utils';
+import { Coordinate } from '@/types';
+import { defineSetup } from '@/utils';
 
 export { OBSTACLE, DIRECTIONS };
 export type { Position };
 
-interface Position {
-  x: number;
-  y: number;
+interface Position extends Coordinate {
   direction: (typeof DIRECTIONS)[keyof typeof DIRECTIONS];
 }
 
@@ -24,8 +23,6 @@ export default defineSetup((input) => {
   const startingRowIndex = rows.findIndex((row) => row.includes(startingDirection));
   const startingColIndex = rows[startingRowIndex].indexOf(startingDirection);
   const startingPosition = { x: startingColIndex, y: startingRowIndex, direction: startingDirection };
-
-  const positionToString = (position: Position) => `${position.x}/${position.y}`;
 
   const nextDirection = (direction: Position['direction']) => {
     switch (direction) {
@@ -150,6 +147,5 @@ export default defineSetup((input) => {
     startingPosition,
     move,
     nextDirection,
-    positionToString,
   } as const;
 });

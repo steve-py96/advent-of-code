@@ -53,7 +53,7 @@ describe('${year}/${day}', async () => {
     // expect(part2(exampleInput)).toBe('insert result');
   });
 
-  it.skip('input', () => {
+  it('input', () => {
     expect(part1(inputInput)).toBe('insert result');
     // expect(part2(inputInput)).toBe('insert result');
   });
