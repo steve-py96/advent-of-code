@@ -6,7 +6,8 @@ import type { Coordinate } from '@/types';
 
 export {
   readInput,
-  getFiles,
+  readExamples,
+  readTestFiles,
   exists,
   getArgs,
   printResult,
@@ -17,20 +18,40 @@ export {
   coordinateToString,
 };
 
-const readInput = (year: string | number, day: string | number, fileName = 'input.txt') =>
-  readFile(join(process.cwd(), 'src', year.toString(), day.toString(), fileName), { encoding: 'utf-8' }).then((res) =>
-    res.trim()
+type StringOrNumber = string | number;
+
+const readInput = (year: StringOrNumber, day: StringOrNumber, fileName = 'input.txt') =>
+  readFile(
+    join(process.cwd(), 'src', year.toString(), (day.toString().length === 1 ? '0' : '') + day.toString(), fileName),
+    { encoding: 'utf-8' }
+  ).then((res) => res.trim());
+
+const readExamples = async (year: StringOrNumber, day: StringOrNumber) => {
+  const dirPath = join(
+    process.cwd(),
+    'src',
+    year.toString(),
+    (day.toString().length === 1 ? '0' : '') + day.toString(),
+    'examples'
   );
+
+  const fileNames = await readdir(dirPath);
+  const fileContents = await Promise.all(
+    fileNames.map((fileName) => readFile(join(dirPath, fileName), { encoding: 'utf-8' }))
+  );
+
+  return Object.fromEntries(
+    fileNames.map((fileName, index) => [fileName.slice(0, -'.txt'.length), fileContents[index]] as const)
+  );
+};
+
+const readTestFiles = (year: StringOrNumber, day: StringOrNumber) =>
+  Promise.all([readInput(year, day), readExamples(year, day)] as const);
 
 const exists = (path: PathLike) =>
   access(path)
     .then(() => true)
     .catch(() => false);
-
-const getFiles = (year: string | number, day: string | number, filePart: string) =>
-  readdir(join(process.cwd(), 'src', year.toString(), day.toString())).then((res) =>
-    res.filter((file) => file.includes(filePart))
-  );
 
 const args = parseArgs({
   options: {
@@ -42,10 +63,6 @@ const args = parseArgs({
       default: '1',
     },
     example: {
-      type: 'boolean',
-      default: false,
-    },
-    examplePart: {
       type: 'string',
       default: '',
     },
@@ -62,7 +79,7 @@ const printDebug = (...data: Array<unknown>) => isDebugMode() && console.log(...
 
 const getArgs = () => {
   const { date, ...rest } = args.values;
-  let [year, day] = date.split('/');
+  let [year, day] = (date ?? '').split('/');
 
   if (!year) {
     throw new Error('no year as arg provided');

@@ -5,13 +5,14 @@ import { exists, getArgs } from '@/utils';
 
 const { year, day } = getArgs();
 const url = `https://adventofcode.com/${year}/day/${day}`;
-const dir = join(process.cwd(), 'src', year, day);
+const dir = join(process.cwd(), 'src', year, day.length === 1 ? `0${day}` : day);
+const examplesDir = join(dir, 'examples');
 const indexPart1 = join(dir, 'index.part1.ts');
 const indexPart2 = join(dir, 'index.part2.ts');
 const setup = join(dir, 'setup.ts');
 const test = join(dir, 'index.test.ts');
 const input = join(dir, 'input.txt');
-const example = join(dir, 'example.txt');
+const example = join(examplesDir, 'shared.txt');
 const text = join(dir, 'text.md');
 
 console.log(`fetching ${year} / ${day}...`);
@@ -38,19 +39,17 @@ export default defineSetup((input) => {
 const testText = (year: string, day: string) =>
   `
 import { describe, it, expect } from 'vitest';
-import { readInput } from '@/utils';
+import { readTestFiles } from '@/utils';
 import part1 from './index.part1';
 import part2 from './index.part2';
 
 describe('${year}/${day}', async () => {
-  const [exampleInput, inputInput] = await Promise.all([
-    readInput(${year}, ${day}, 'example.txt'),
-    readInput(${year}, ${day})
-  ])
+  const [inputInput, examples] = await readTestFiles(${year}, ${day});
+
 
   it('example', () => {
-    expect(part1(exampleInput)).toBe('insert result');
-    // expect(part2(exampleInput)).toBe('insert result');
+    expect(part1(examples.shared)).toBe('insert result');
+    // expect(part2(examples.shared)).toBe('insert result');
   });
 
   it('input', () => {
@@ -68,13 +67,17 @@ const textPage = await fetch(url).then((res) => {
   return res.text();
 });
 
-const content = parse(textPage)
-  .querySelector('article.day-desc')
+const content = parse(textPage)!
+  .querySelector('article.day-desc')!
   .textContent.replace(/<\/?\w+>/g, '')
   .trim();
 
 if (!(await exists(dir))) {
   await mkdir(dir);
+}
+
+if (!(await exists(examplesDir))) {
+  await mkdir(examplesDir);
 }
 
 if (!(await exists(indexPart1))) {
